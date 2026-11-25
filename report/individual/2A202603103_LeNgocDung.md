@@ -2,7 +2,7 @@
 
 ## 1. Kết luận trước
 
-Task **D13-2A202603103** (Task 16/Job 16), CVAT **2.82.0**, Windows, trình duyệt Chrome. Bản Save có **65 cuboid Shape**, **0 Track**: 60 Car, 1 Bus, 3 Cyclist, 1 Truck. Có **63 hộp trong 50 m**, không hộp rỗng; tự kiểm còn **2/65 hộp có cờ**. Số hộp theo thứ tự 10 frame:
+Task **D13-2A202603103** (Task 16/Job 16), CVAT **2.82.0**, Windows; học viên dùng Chrome, ảnh cập nhật bằng trình duyệt tích hợp. Bản Save có **65 cuboid Shape**, **0 Track**: 58 Car, 1 Bus, 3 Cyclist, 3 Truck. Có **63 hộp trong 50 m**, không hộp rỗng; tự kiểm **0/65 hộp có cờ**. Số hộp theo thứ tự 10 frame:
 
 | Frame | Hộp | Frame | Hộp |
 |---|---:|---|---:|
@@ -18,11 +18,11 @@ Cách dùng: kéo chuột trái để xoay, chuột phải để dời, con lăn
 
 ## 2. Đọc frame (T1)
 
-Trong hai ảnh Top đã nộp, **phía trước −y sang phải, +x lên trên, +y sang trái** (gần đúng theo góc xoay hiện tại). BEV chuẩn của `preview` có −y ở trên, +x bên trái, +y dưới. Mặt đường tham chiếu z≈−1,7 m; chưa đo riêng độ dốc.
+Trong hai ảnh Top đã nộp, **phía trước −y sang phải, +x lên trên, +y sang trái** (gần đúng theo góc xoay hiện tại). BEV chuẩn của `preview` có −y ở trên, +x bên trái, +y dưới. Mặt đường gần xe tham chiếu z≈−1,7 m; cao độ thay đổi theo vị trí, không áp cùng một đáy cho mọi xe.
 
 | Frame | Loại vật, xa nhất đã gán | Hai bên/phía sau, chỗ chưa chắc | Ảnh trong ZIP |
 |---|---|---|---|
-| s01f07 | Car; hộp xa nhất 37,69 m | Xe sát bên trái trên cam05/cam06; #5 và #7 còn cờ | `t1-s01f07-3d.jpg`, `t1-s01f07-top.png` |
+| s01f07 | Car, Truck; hộp xa nhất 37,69 m | Xe sát bên trái trên cam05/cam06; hai Truck #5/#7 bị che một phần | `t1-s01f07-3d.jpg`, `t1-s01f07-top.png` |
 | s01f45 | Car; hộp xa nhất 22,16 m | Dòng xe phía trước và làn bên trái; có xe phía sau trên cam09; ranh giới vật bị che chưa chắc | `t1-s01f45-3d.jpg`, `t1-s01f45-top.png` |
 
 Camera cho biết màu sơn, chi tiết vỏ xe và đèn/đầu–đuôi để nhận dạng; LiDAR cho tâm theo mét, độ cao so mặt đường và số điểm trả về. Đối chiếu cả hai để tránh dùng hình dáng suy đoán khi cụm điểm thưa.
@@ -77,21 +77,23 @@ Xa gấp 7,69 lần thì số điểm còn 2,16% trong hai mẫu đầu/cuối. 
 
 **Rework đã xác minh:** s03f46 #6 thu rộng 2,360→2,001 m (136 điểm); s04f01 #7 thu rộng 2,415→1,921 m (681 điểm), hết cờ kích thước. s05f45 #7 nâng z từ −1,581 lên −1,285 m, chênh đáy còn −0,22 m và hết cờ; s01f07 #2 chỉnh đáy còn lệch 0,02 m. Hai ảnh toàn cảnh frame đầu/thứ hai đã chụp lại.
 
-**Còn hai cảnh báo chưa xử lý dứt điểm:**
+**Hai hộp sửa bổ sung với AI hỗ trợ:** đối chiếu cam06/cam09 thấy cabin và thùng hàng; đổi Car→Truck, bật occluded. Kiểm Top/Side/Front và điểm mặt đường tại chỗ trước khi xuất lại.
 
-| Frame, idx | Thông số và cờ |
-|---|---|
-| s01f07 #5 | 5,235×2,192×2,054 m; tâm (14,954;6,018) m; đáy cao hơn đường tại chỗ 0,79 m |
-| s01f07 #7 | 2,934×2,460×2,092 m; tâm (18,273;22,218) m; dài <3,0 m, rộng >2,3 m theo ngưỡng Car |
+| Frame, idx | Trước → sau | Tự kiểm sau sửa |
+|---|---|---|
+| s01f07 #5 | 5,235×2,192×2,054→5,235×2,192×2,530 m; z −0,348→−0,805 m; đáy −2,070 m | 702 điểm; chênh đáy 0,09 m; hết cờ |
+| s01f07 #7 | 2,934×2,460×2,092→4,300×1,940×1,964 m; tâm (18,250;22,950;−1,132) m; đáy −2,114 m | 226 điểm; chênh đáy 0,18 m; hết cờ |
 
-Hai hộp chưa đổi thông số trong bản Save mới nhất. Chưa có đủ cơ sở để khẳng định cờ là sai; ghi rõ phần chưa chắc, không chỉ sửa để tắt cờ. ID Objects có thể đổi khi nạp task; nhận diện bằng frame, idx bảng A và kích thước. **Chưa kiểm chéo với bạn học**, chưa có MSSV/hai số đối chiếu.
+Mặt đường cục bộ được ước lượng từ điểm lân cận; chênh đáy trong phiếu dùng cách ước lượng gốc của lab. Giữ mặt phía gần LiDAR, bổ sung phần cabin bị che theo camera; phần khuất vẫn có bất định. Chỉ hai hộp này thay đổi; tổng vẫn 65. Đã chụp lại toàn cảnh, Top và ảnh Car frame đầu. ID Objects có thể đổi khi nạp task; nhận diện bằng frame, idx bảng A và kích thước.
+
+**Tôi đã tự kiểm nhãn trên CVAT và rà soát phiếu tự kiểm.** Lần sửa hai hộp cuối và xuất lại số liệu có AI hỗ trợ; đây là tự kiểm cá nhân. **Chưa kiểm chéo với bạn học**, chưa có MSSV/hai số đối chiếu.
 
 ## 6. Ý nghĩa của nhãn, cách dùng AI và phần chưa chắc
 
 Model học vị trí/kích thước 3D theo mét để ước lượng khoảng cách, không phụ thuộc kích thước pixel của từng camera. Quy tắc cho vật thưa điểm giúp model tránh học hình dạng suy đoán hoặc cụm nhiễu thành đối tượng thật.
 
 - **Công cụ:** ChatGPT/Codex.
-- **Nội dung hỗ trợ:** môi trường, tạo task, tạo một phần cuboid nháp, xuất số liệu/tự kiểm, hỗ trợ soạn báo cáo và lớp mũi tên chú thích.
-- **Cách dùng kết quả:** học viên xác nhận đã rà soát nhãn; metadata có 42 auto, 1 semi-auto, 22 manual. Không mô tả tất cả nhãn là tự vẽ từ đầu.
+- **Nội dung hỗ trợ:** môi trường, tạo task, tạo một phần cuboid nháp, hỗ trợ sửa hai hộp cuối, xuất số liệu/tự kiểm, hỗ trợ soạn báo cáo và lớp mũi tên chú thích.
+- **Cách dùng kết quả:** học viên xác nhận đã rà soát nhãn; metadata sau sửa có 42 auto, 3 semi-auto, 20 manual. Không mô tả tất cả nhãn là tự vẽ từ đầu.
 
 Chưa xác nhận đúng đầu–đuôi/IoU/recall theo nhãn chuẩn; phản xạ thấp chỉ là giả thuyết. Hiệu chuẩn, kiểm chéo và ngoại lệ frame mẫu đã nêu đúng trạng thái. Đủ số lượng/11 ảnh chưa chứng minh đạt bài; tổng điểm và các ngưỡng trong RUBRIC.md cần kết quả chấm của coach.
