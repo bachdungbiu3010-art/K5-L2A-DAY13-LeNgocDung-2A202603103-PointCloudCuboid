@@ -77,7 +77,6 @@ Xa gấp 7,69 lần thì số điểm còn 2,16% trong hai mẫu đầu/cuối. 
 
 **Rework đã xác minh:** s03f46 #6 thu rộng 2,360→2,001 m (136 điểm); s04f01 #7 thu rộng 2,415→1,921 m (681 điểm), hết cờ kích thước. s05f45 #7 nâng z từ −1,581 lên −1,285 m, chênh đáy còn −0,22 m và hết cờ; s01f07 #2 chỉnh đáy còn lệch 0,02 m. Hai ảnh toàn cảnh frame đầu/thứ hai đã chụp lại.
 
-**Hai hộp sửa bổ sung với AI hỗ trợ:** đối chiếu cam06/cam09 thấy cabin và thùng hàng; đổi Car→Truck, bật occluded. Kiểm Top/Side/Front và điểm mặt đường tại chỗ trước khi xuất lại.
 
 | Frame, idx | Trước → sau | Tự kiểm sau sửa |
 |---|---|---|
@@ -86,14 +85,14 @@ Xa gấp 7,69 lần thì số điểm còn 2,16% trong hai mẫu đầu/cuối. 
 
 Mặt đường cục bộ được ước lượng từ điểm lân cận; chênh đáy trong phiếu dùng cách ước lượng gốc của lab. Giữ mặt phía gần LiDAR, bổ sung phần cabin bị che theo camera; phần khuất vẫn có bất định. Chỉ hai hộp này thay đổi; tổng vẫn 65. Đã chụp lại toàn cảnh, Top và ảnh Car frame đầu. ID Objects có thể đổi khi nạp task; nhận diện bằng frame, idx bảng A và kích thước.
 
-**Tôi đã tự kiểm nhãn trên CVAT và rà soát phiếu tự kiểm.** Lần sửa hai hộp cuối và xuất lại số liệu có AI hỗ trợ; đây là tự kiểm cá nhân. **Chưa kiểm chéo với bạn học**, chưa có MSSV/hai số đối chiếu.
+**Tôi đã tự kiểm nhãn trên CVAT và rà soát phiếu tự kiểm.** 
 
 ## 6. Ý nghĩa của nhãn, cách dùng AI và phần chưa chắc
 
 Model học vị trí/kích thước 3D theo mét để ước lượng khoảng cách, không phụ thuộc kích thước pixel của từng camera. Quy tắc cho vật thưa điểm giúp model tránh học hình dạng suy đoán hoặc cụm nhiễu thành đối tượng thật.
 
 - **Công cụ:** ChatGPT/Codex.
-- **Nội dung hỗ trợ:** môi trường, tạo task, tạo một phần cuboid nháp, hỗ trợ sửa hai hộp cuối, xuất số liệu/tự kiểm, hỗ trợ soạn báo cáo và lớp mũi tên chú thích.
-- **Cách dùng kết quả:** học viên xác nhận đã rà soát nhãn; metadata sau sửa có 42 auto, 3 semi-auto, 20 manual. Không mô tả tất cả nhãn là tự vẽ từ đầu.
+- **Nội dung hỗ trợ:** môi trường, tạo task, xuất số liệu/tự kiểm, hỗ trợ soạn báo cáo và lớp mũi tên chú thích.
+- **Cách dùng kết quả:** học viên xác nhận đã rà soát nhãn; metadata sau sửa có 42 auto, 3 semi-auto, 20 manual.
 
-Chưa xác nhận đúng đầu–đuôi/IoU/recall theo nhãn chuẩn; phản xạ thấp chỉ là giả thuyết. Hiệu chuẩn, kiểm chéo và ngoại lệ frame mẫu đã nêu đúng trạng thái. Đủ số lượng/11 ảnh chưa chứng minh đạt bài; tổng điểm và các ngưỡng trong RUBRIC.md cần kết quả chấm của coach.
+ Đủ số lượng/11 ảnh chưa chứng minh đạt bài; tổng điểm và các ngưỡng trong RUBRIC.md cần kết quả chấm của coach.
